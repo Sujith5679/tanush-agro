@@ -9,30 +9,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: 'businesses/:id',
-        element: <BusinessDetail />,
-      },
-      {
-        path: 'about',
-        element: <Placeholder title="About Tanush Group" />,
-      },
-      {
-        path: 'our-work',
-        element: <Placeholder title="Our Work & Projects" />,
-      },
-      {
-        path: 'gallery',
-        element: <Placeholder title="Inside Tanush Group" />,
-      },
-      {
-        path: 'contact',
-        element: <Placeholder title="Contact Us" />,
-      }
+      { index: true, element: <Home /> },
+      { path: 'businesses/:id', element: <BusinessDetail /> },
+      { path: 'about', element: <Placeholder title="About Tanush Group" /> },
+      { path: 'our-work', element: <Placeholder title="Our Work & Projects" /> },
+      { path: 'gallery', element: <Placeholder title="Inside Tanush" /> },
+      { path: 'contact', element: <Placeholder title="Let's Connect" /> },
     ],
   },
 ]);

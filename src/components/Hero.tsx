@@ -1,64 +1,170 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useMagnetic } from '../hooks/useMagnetic';
+
+const verticals = ['Agricultural Trade', 'Hospitality', 'Renewable Energy', 'Logistics'];
+
+const wordVariants = {
+  hidden: { opacity: 0, y: 40, filter: 'blur(8px)' },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.8,
+      delay: 0.3 + i * 0.12,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  }),
+};
 
 export function Hero() {
+  const [verticalIndex, setVerticalIndex] = useState(0);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
+  const scrollCueRef = useRef<HTMLDivElement>(null);
+  useMagnetic(ctaRef, 0.25);
+
+  // Text-swap cycling through verticals
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVerticalIndex(prev => (prev + 1) % verticals.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fade scroll cue on first scroll
+  useEffect(() => {
+    const onScroll = () => {
+      if (scrollCueRef.current && window.scrollY > 50) {
+        scrollCueRef.current.style.opacity = '0';
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const headlineWords = ['Building', 'Businesses.', 'Creating', 'Value.'];
+
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-slate-900 overflow-hidden">
-      {/* Background Image / Placeholder */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent z-10" />
+    <section className="relative min-h-screen flex items-center overflow-hidden" style={{ backgroundColor: 'var(--color-hero-bg)' }}>
+      {/* Parallax Background Layer */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{ willChange: 'transform' }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-hero-bg)]/30 via-transparent to-[var(--color-hero-bg)] z-10" />
         <img
-          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop"
-          alt="Tanush Group"
-          className="w-full h-full object-cover object-center"
+          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070&auto=format&fit=crop"
+          alt=""
+          className="w-full h-full object-cover opacity-30 scale-110"
+          aria-hidden="true"
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-        <div className="max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6">
-              Building Businesses.<br />
-              <span className="text-blue-400">Creating Value.</span>
+      {/* Content */}
+      <div className="relative z-20 max-w-[1400px] mx-auto px-6 lg:px-10 w-full py-32">
+        <div className="max-w-4xl">
+          {/* Kinetic Headline */}
+          <div className="mb-8">
+            <h1 style={{ color: 'var(--color-hero-text)' }}>
+              {headlineWords.map((word, i) => (
+                <motion.span
+                  key={word}
+                  custom={i}
+                  initial="hidden"
+                  animate="visible"
+                  variants={wordVariants}
+                  className="inline-block mr-[0.3em]"
+                >
+                  {i === 2 && <br className="hidden md:block" />}
+                  {word}
+                </motion.span>
+              ))}
             </h1>
-          </motion.div>
-          
+          </div>
+
+          {/* Text-swap vertical */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="mb-12"
           >
-            <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
-              Tanush Group of Companies is a diversified business group operating across agricultural trade, hospitality, renewable energy and logistics.
+            <p
+              className="text-lg md:text-xl leading-relaxed mb-6 max-w-2xl"
+              style={{ color: 'var(--color-hero-text)', opacity: 0.6 }}
+            >
+              A diversified business group operating across
             </p>
+            <div className="h-10 md:h-12 overflow-hidden relative">
+              {verticals.map((v, i) => (
+                <motion.span
+                  key={v}
+                  className="absolute left-0 text-2xl md:text-3xl font-bold"
+                  style={{
+                    fontFamily: '"Outfit", sans-serif',
+                    color: 'var(--color-accent)',
+                  }}
+                  initial={false}
+                  animate={{
+                    y: i === verticalIndex ? 0 : i < verticalIndex ? -50 : 50,
+                    opacity: i === verticalIndex ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {v}
+                </motion.span>
+              ))}
+            </div>
           </motion.div>
 
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+            transition={{ delay: 1.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col sm:flex-row gap-4"
           >
             <a
+              ref={ctaRef}
               href="#businesses"
-              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full transition-all duration-300"
+              style={{
+                backgroundColor: 'var(--color-accent)',
+                color: '#0c0c0c',
+              }}
+              data-magnetic
             >
               Explore Our Businesses
-              <ArrowRight className="ml-2 w-5 h-5" />
             </a>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center px-8 py-4 border border-slate-300 text-base font-medium rounded-md text-white hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full border transition-all duration-300"
+              style={{
+                borderColor: 'var(--color-hero-text)',
+                color: 'var(--color-hero-text)',
+                opacity: 0.7,
+              }}
             >
               Get in Touch
             </Link>
           </motion.div>
         </div>
+      </div>
+
+      {/* Scroll Cue */}
+      <div
+        ref={scrollCueRef}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 transition-opacity duration-500"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ArrowDown className="w-5 h-5" style={{ color: 'var(--color-hero-text)', opacity: 0.4 }} />
+        </motion.div>
       </div>
     </section>
   );

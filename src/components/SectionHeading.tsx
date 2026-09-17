@@ -4,27 +4,33 @@ interface SectionHeadingProps {
   title: string;
   subtitle?: string;
   centered?: boolean;
+  light?: boolean;
 }
 
-export function SectionHeading({ title, subtitle, centered = false }: SectionHeadingProps) {
+export function SectionHeading({ title, subtitle, centered = false, light = false }: SectionHeadingProps) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className={`mb-12 md:mb-16 ${centered ? 'text-center' : ''}`}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className={`mb-16 md:mb-20 ${centered ? 'text-center' : ''}`}
     >
-      <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+      <h2
+        className={`tracking-tight mb-5 ${
+          light ? 'text-[var(--color-hero-text)]' : 'text-[var(--color-text)]'
+        }`}
+      >
         {title}
       </h2>
       {subtitle && (
-        <p className="text-lg text-slate-600 max-w-2xl text-balance">
+        <p
+          className={`text-lg md:text-xl leading-relaxed max-w-2xl ${
+            centered ? 'mx-auto' : ''
+          } ${light ? 'text-[var(--color-hero-text)]/60' : 'text-[var(--color-text-muted)]'}`}
+        >
           {subtitle}
         </p>
-      )}
-      {centered && (
-        <div className="mt-8 mx-auto w-24 h-1 bg-blue-600 rounded-full" />
       )}
     </motion.div>
   );

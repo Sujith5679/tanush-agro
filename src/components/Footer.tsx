@@ -1,34 +1,50 @@
 import { Link } from 'react-router-dom';
-import { Phone, MessageCircle, Mail } from 'lucide-react';
+import { Phone, MessageCircle, Mail, ArrowUpRight } from 'lucide-react';
 import { businesses } from '../data/businesses';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-950 text-slate-300 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          
-          {/* Brand */}
-          <div className="space-y-6 lg:col-span-1">
-            <div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">TANUSH</h2>
-              <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mt-1">Group of Companies</p>
-            </div>
-            <p className="text-sm leading-relaxed text-slate-400">
-              Building Businesses. Creating Value. A diversified business group rooted in Vellore, expanding across industries.
-            </p>
-          </div>
+    <footer
+      className="py-20 md:py-28"
+      style={{ backgroundColor: 'var(--color-footer-bg)', color: 'var(--color-footer-text)' }}
+    >
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        {/* Top: Large brand statement */}
+        <div className="mb-20">
+          <h2
+            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]"
+            style={{
+              fontFamily: '"Outfit", sans-serif',
+              color: 'var(--color-footer-heading)',
+            }}
+          >
+            Building Businesses.
+            <br />
+            <span style={{ color: 'var(--color-accent)' }}>Creating Value.</span>
+          </h2>
+        </div>
 
+        {/* Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 mb-20">
           {/* Businesses */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">Businesses</h3>
+            <h3
+              className="text-xs font-semibold uppercase tracking-[0.2em] mb-8"
+              style={{ color: 'var(--color-footer-heading)' }}
+            >
+              Businesses
+            </h3>
             <ul className="space-y-4">
               {businesses.map((business) => (
                 <li key={business.id}>
-                  <Link to={`/businesses/${business.id}`} className="text-sm hover:text-white transition-colors">
+                  <Link
+                    to={`/businesses/${business.id}`}
+                    className="text-sm flex items-center gap-1 group transition-colors duration-300 hover:text-[var(--color-accent)]"
+                  >
                     {business.name.replace('Tanush ', '')}
+                    <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Link>
                 </li>
               ))}
@@ -37,58 +53,97 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">Company</h3>
+            <h3
+              className="text-xs font-semibold uppercase tracking-[0.2em] mb-8"
+              style={{ color: 'var(--color-footer-heading)' }}
+            >
+              Company
+            </h3>
             <ul className="space-y-4">
-              <li>
-                <Link to="/about" className="text-sm hover:text-white transition-colors">About</Link>
-              </li>
-              <li>
-                <Link to="/our-work" className="text-sm hover:text-white transition-colors">Our Work</Link>
-              </li>
-              <li>
-                <Link to="/gallery" className="text-sm hover:text-white transition-colors">Gallery</Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-sm hover:text-white transition-colors">Contact</Link>
-              </li>
+              {[
+                { label: 'About', href: '/about' },
+                { label: 'Our Work', href: '/our-work' },
+                { label: 'Gallery', href: '/gallery' },
+                { label: 'Contact', href: '/contact' },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className="text-sm transition-colors duration-300 hover:text-[var(--color-accent)]"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Connect */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">Connect</h3>
+            <h3
+              className="text-xs font-semibold uppercase tracking-[0.2em] mb-8"
+              style={{ color: 'var(--color-footer-heading)' }}
+            >
+              Connect
+            </h3>
             <ul className="space-y-4">
               <li>
-                <a href="tel:+919524430044" className="text-sm flex items-center hover:text-white transition-colors">
-                  <Phone className="w-4 h-4 mr-3" />
+                <a
+                  href="tel:+919524430044"
+                  className="text-sm flex items-center gap-3 transition-colors duration-300 hover:text-[var(--color-accent)]"
+                >
+                  <Phone className="w-4 h-4 flex-shrink-0" />
                   +91 95244 30044
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm flex items-center hover:text-white transition-colors">
-                  <MessageCircle className="w-4 h-4 mr-3" />
+                <a
+                  href="https://wa.me/919524430044"
+                  className="text-sm flex items-center gap-3 transition-colors duration-300 hover:text-[var(--color-accent)]"
+                >
+                  <MessageCircle className="w-4 h-4 flex-shrink-0" />
                   WhatsApp
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm flex items-center hover:text-white transition-colors">
-                  <Mail className="w-4 h-4 mr-3" />
+                <a
+                  href="mailto:info@tanushgroup.com"
+                  className="text-sm flex items-center gap-3 transition-colors duration-300 hover:text-[var(--color-accent)]"
+                >
+                  <Mail className="w-4 h-4 flex-shrink-0" />
                   Email
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Location */}
+          <div>
+            <h3
+              className="text-xs font-semibold uppercase tracking-[0.2em] mb-8"
+              style={{ color: 'var(--color-footer-heading)' }}
+            >
+              Headquarters
+            </h3>
+            <p className="text-sm leading-relaxed">
+              Vellore, Tamil Nadu
+              <br />
+              India
+            </p>
+          </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-slate-500">
+        {/* Bottom bar */}
+        <div
+          className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+          style={{ borderTop: '1px solid var(--color-border)' }}
+        >
+          <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
             &copy; {currentYear} Tanush Group of Companies. All Rights Reserved.
           </p>
-          <div className="mt-4 md:mt-0 flex space-x-6 text-sm text-slate-500">
-            <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
-          </div>
+          <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+            Vellore &middot; Odugathur &middot; Tamil Nadu
+          </p>
         </div>
       </div>
     </footer>
